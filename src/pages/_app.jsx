@@ -1,5 +1,6 @@
 'use client'
-import "../styles/global.css";
+import "../styles/global.css"
+import React from "react"
 import { StarknetProvider } from "../components/starknet-provider"
 
 
