@@ -11,6 +11,7 @@ function App({ Component, pageProps }) {
         <StarknetProvider>
         <Component {...pageProps} />
         </StarknetProvider>
+        
         </>
     )
 }
