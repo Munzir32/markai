@@ -2,6 +2,93 @@ export const markai = {
     model: "gpt-4o",
   temperature: 0,
   systemPrompt: "Generates a marketing plan or explains marketing strategies.",
+  userPrompt: (marketingProblem: string) => `You are a helpful assistant specialized in generating marketing plans and strategies. ${marketingProblem}`,
+  responseFormat: {
+    type: "json_schema",
+    json_schema: {
+      name: "marketingStrategyResponse",
+      strict: true,
+      schema: {
+        type: "object",
+        required: ["strategySummary", "detailedPlan"],
+        properties: {
+          strategySummary: {
+            type: "string",
+            description: "A high-level summary of the marketing strategy."
+          },
+          detailedPlan: {
+            type: "object",
+            required: ["targetAudience", "budgetBreakdown", "actionItems"],
+            properties: {
+              targetAudience: {
+                type: "object",
+                required: ["age_range", "interests", "location"],
+                properties: {
+                  age_range: {
+                    type: "string",
+                    description: "Age range of the target audience."
+                  },
+                  interests: {
+                    type: "array",
+                    description: "Interests of the target audience.",
+                    items: {
+                      type: "string",
+                      description: "Interest or characteristic of the audience."
+                    }
+                  },
+                  location: {
+                    type: "string",
+                    description: "Geographic location of the target audience."
+                  }
+                },
+                additionalProperties: false
+              },
+              budgetBreakdown: {
+                type: "object",
+                description: "Detailed breakdown of the budget allocation.",
+                properties: {
+                  totalBudget: {
+                    type: "number",
+                    description: "Total budget allocated for the marketing plan."
+                  },
+                  allocations: {
+                    type: "array",
+                    description: "List of budget allocations for various marketing activities.",
+                    items: {
+                      type: "object",
+                      properties: {
+                        category: {
+                          type: "string",
+                          description: "Category of marketing activity (e.g., Ads, Social Media, Events)."
+                        },
+                        amount: {
+                          type: "number",
+                          description: "Amount allocated to this category."
+                        }
+                      },
+                      required: ["category", "amount"]
+                    }
+                  }
+                },
+                required: ["totalBudget", "allocations"]
+              },
+              actionItems: {
+                type: "array",
+                description: "List of specific marketing actions or tasks to be executed.",
+                items: {
+                  type: "string",
+                  description: "Specific action item for the marketing plan."
+                }
+              }
+            },
+            additionalProperties: false
+          }
+        },
+        additionalProperties: false,
+        $schema: "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  },
   tools: [
     {
       "type": "function",
